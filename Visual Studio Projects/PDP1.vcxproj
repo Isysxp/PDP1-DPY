@@ -59,7 +59,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>./;../;../windows-build/winpcap/Wpdpack/Include;../windows-build/PCRE/include;../windows-build/pthreads;../slirp;../slirp_glue;../slirp_glue/qemu;../slirp_glue/qemu/win32/include;../windows-build/libsdl/SDL3-3.4.0/include;../windows-build/libsdl/SDL3-3.4.0/include/SDL3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;SIM_NEED_GIT_COMMIT_ID;HAVE_PCREPOSIX_H;PCRE_STATIC;USE_DISPLAY;DISPLAY_TYPE=DIS_TYPE30;PIX_SCALE=RES_FULL;USE_SIM_VIDEO;HAVE_LIBSDL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;SIM_NEED_GIT_COMMIT_ID;HAVE_PCREPOSIX_H;PCRE_STATIC;USE_DISPLAY;DISPLAY_TYPE=DIS_TYPE30;PIX_SCALE=RES_HALF;USE_SIM_VIDEO;HAVE_LIBSDL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessKeepComments>false</PreprocessKeepComments>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
