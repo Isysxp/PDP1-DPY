@@ -93,7 +93,7 @@ static SDL_Window *window = 0;                    // Declare some pointers
 static SDL_Surface *surface = 0, *surface32 = 0;
 static SDL_Cursor *cursor = 0;
 static SDL_Surface *bckgnd = NULL, *logo = 0;
-static const SDL_Rect target = { 1440, 1480, 156, 31 }; // x, y, width, height
+static const SDL_Rect target = { 1440/PIX_SCALE, 1480/PIX_SCALE, 156, 31 }; // x, y, width, height
 static SDL_PropertiesID props;
 static struct pixel_color_set {
     uint8_t R, G, B, A;
@@ -320,12 +320,13 @@ t_stat vid_create_window(void)
     SDL_Init (SDL_INIT_VIDEO);
 #if PIX_SCALE == RES_FULL
     bckgnd = SDL_LoadBMP("pdp1-type30-outline-Final.bmp");
+    logo = SDL_LoadBMP("New_Logo_2.bmp");
 #else
     bckgnd = SDL_LoadBMP("pdp1-type30-outline-small.bmp");
+    logo = SDL_LoadBMP("New_Logo.bmp");
 #endif
     surface32 = SDL_ConvertSurface(bckgnd,SDL_PIXELFORMAT_ARGB8888);
     SDL_SetSurfaceColorKey(surface32, true, 0);
-    logo = SDL_LoadBMP("New_Logo_2.bmp");
     props = SDL_CreateProperties();
     window = SDL_CreateWindow(
         vid_title,							// window title
@@ -742,7 +743,7 @@ int vid_poll_mouse (SIM_MOUSE_EVENT *mev)
     memcpy(xhev,xmev,sizeof(SIM_MOUSE_EVENT));		/* Keep local copy */
     SDL_ReadSurfacePixel(surface, xmev->x_pos, xmev->y_pos, &color_pixel.R, &color_pixel.G, &color_pixel.B, &color_pixel.A);
 	colorval = (color_pixel.R << 16) | (color_pixel.G << 8) | (color_pixel.B);
-	if (xmev->b2_state && colorval == 0x9ad9ea)
+	if (xmev->b2_state && (colorval == 0x9ad9ea || colorval == 0x599aa6))
 		{
 			SDL_GetWindowPosition(window, &curx, &cury);
 			curx += xmev->x_rel;
@@ -806,7 +807,6 @@ t_stat vid_unlock_cursor()
 /*	Original beep code from Matt Burke's code */
 
 
-#include <SDL_audio.h>
 #include <math.h>
 
 const int AMPLITUDE = 20000;
@@ -815,7 +815,7 @@ static int16 *vid_beep_data;
 static int vid_beep_offset;
 static int vid_beep_duration;
 static int vid_beep_samples;
-
+/*
 static void vid_audio_callback(void *ctx, Uint8 *stream, int length)
 {
     int16 *data = (int16 *)stream;
@@ -834,7 +834,7 @@ static void vid_audio_callback(void *ctx, Uint8 *stream, int length)
         sum += stream[i];
     vid_beep_offset += length / sizeof(*vid_beep_data);
 }
-/*
+
 static void vid_beep_setup (int duration_ms, int tone_frequency)
 {
     if (!vid_beep_data) {
@@ -856,7 +856,7 @@ static void vid_beep_setup (int duration_ms, int tone_frequency)
         for (i=0; i<vid_beep_samples; i++)
             vid_beep_data[i] = (int16)(AMPLITUDE * sin(((double)(i * M_PI * tone_frequency)) / SAMPLE_FREQUENCY));
     }
-}*/
+}
 static void vid_beep_cleanup (void)
 {
     SDL_CloseAudio();
@@ -866,10 +866,10 @@ static void vid_beep_cleanup (void)
 
 void vid_beep_event (void)
 {
-    vid_beep_offset = 0;                /* reset to beginning of sample set */
-    SDL_PauseAudio (0);                 /* Play sound */
+    vid_beep_offset = 0;                // reset to beginning of sample set 
+    SDL_PauseAudio (0);                 // Play sound 
 }
-
+*/
 
 /*
     Translate SDL Keyboard codes to SIMH internal codes for use by any simulator
