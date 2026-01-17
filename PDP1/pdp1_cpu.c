@@ -518,6 +518,8 @@ void uSleep(int waitTime) {
         QueryPerformanceCounter((LARGE_INTEGER *) &time2);
     } while((time2-time1) < waitTime);
 }
+#else
+#define uSleep usleep
 #endif
 t_stat sim_instr (void)
 {

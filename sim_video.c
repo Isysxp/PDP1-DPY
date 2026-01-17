@@ -32,7 +32,7 @@ in this Software without prior written authorization from the author.
                      is supported by many operating systems.
 
 */
-
+#define DISPLAY_SIZE (2048/PIX_SCALE)  /* Max display size in each dimension */
 #include "sim_defs.h"
 #include "sim_video.h"
 #include "sim_sock.h"
@@ -318,7 +318,11 @@ t_stat vid_create_window(void)
     Uint32 colorkey;
     // Create an application window with the following settings:
     SDL_Init (SDL_INIT_VIDEO);
+#if PIX_SCALE == RES_FULL
     bckgnd = SDL_LoadBMP("pdp1-type30-outline-Final.bmp");
+#else
+    bckgnd = SDL_LoadBMP("pdp1-type30-outline-small.bmp");
+#endif
     surface32 = SDL_ConvertSurface(bckgnd,SDL_PIXELFORMAT_ARGB8888);
     SDL_SetSurfaceColorKey(surface32, true, 0);
     logo = SDL_LoadBMP("New_Logo_2.bmp");
@@ -357,8 +361,8 @@ t_stat vid_create_window(void)
     pixels = (unsigned char *)surface->pixels;
     sptr = (int32 *)surface->pixels;
     surlen = (bckgnd->h * surface->pitch);
-    drawCircle(bckgnd->w/2-1,bckgnd->h/2-1,364*2);
-    drawFilledCircle(bckgnd->w/2,bckgnd->h/2,362*2);
+    drawCircle(bckgnd->w/2-1,bckgnd->h/2-1,728/PIX_SCALE);
+    drawFilledCircle(bckgnd->w/2,bckgnd->h/2,724/PIX_SCALE);
     SDL_BlitSurface(logo, NULL, surface, &target);
     SDL_UpdateWindowSurface(window);
     SDL_CreateThread(Refresh,"Refresh",(void *)NULL);
@@ -368,8 +372,8 @@ t_stat vid_create_window(void)
              SDL_ShowCursor();			        /* Make host OS cursor invisible in non-capture mode or */
                                                             /* for all other system that use their own cursor (see sim_ws.c:vid_open) */
     vid_init = RUNNING;									    /* Init OK continue to next state */
-    pixels = (unsigned char *)surface->pixels + ((bckgnd->h / 2 - 512) * surface->pitch/4 + bckgnd->w/2 - 512) * sizeof(uint32); /* char* pointer to first display pixel*/
-    pxstep = bckgnd->w * 2 - 2048;                                                      /* char* step to next line of pixels */
+    pixels = (unsigned char *)surface->pixels + ((bckgnd->h / 2 - DISPLAY_SIZE / 4) * surface->pitch/4 + bckgnd->w/2 - DISPLAY_SIZE / 4) * sizeof(uint32); /* char* pointer to first display pixel*/
+    pxstep = bckgnd->w * 2 - DISPLAY_SIZE;                                                      /* char* step to next line of pixels */
     return SCPE_OK;
 }
 
@@ -553,6 +557,7 @@ static int Refresh(void *info) {
     double *d;
     bool rsl;
     int lim[]={0x0,0x30,0x30};
+	int area = DISPLAY_SIZE * DISPLAY_SIZE / 4;
     
     SDL_GLContext Cntxt=SDL_GL_CreateContext(window);
     if (!Cntxt)
@@ -568,11 +573,11 @@ static int Refresh(void *info) {
 
             dflag++;                                        // Raise display update flag
             if (!nostore && sim_is_running)                 // Only decay the pixels in store mode and if the simulator is running
-                for (i = 0,p=(unsigned char *)pixels;i < 1024*1024; i++, p++) {
+                for (i = 0,p=(unsigned char *)pixels;i < area; i++, p++) {
                     for (j = 0,d = colmap;j < 3;j++, p++, d++)
                         if (*p > lim[j])
                             *p = (unsigned char)(*p * (*d) - 1);	// Decay none zero pixels only
-                    if ((i & 1023) == 1023)
+                    if ((i & DISPLAY_SIZE/2 - 1) == DISPLAY_SIZE/2 - 1)
                         p = p + pxstep * 2;
                 }
         }
@@ -770,7 +775,7 @@ t_stat vid_setpixel(int ix,int iy,int level,int color) {
     Uint32 *p;
 
     if (vid_init == RUNNING) {
-        p = (Uint32*)(pixels + (ix & 1024) * pxstep + ((iy * surface->pitch) + (ix * sizeof(Uint32))));
+        p = (Uint32*)(pixels + (ix & DISPLAY_SIZE/2) * pxstep + ((iy * surface->pitch) + (ix * sizeof(Uint32))));
         *p = pxval;
     }
     return SCPE_OK;

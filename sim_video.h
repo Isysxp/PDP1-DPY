@@ -213,7 +213,11 @@ void vid_set_cursor_position (int32 x, int32 y);        /* cursor position (set 
 #endif
 
 #if defined(USE_SIM_VIDEO) && defined(HAVE_LIBSDL)
+#ifdef WIN32
 #include <SDL.h>
+#else
+#include <SDL3/SDL.h>
+#endif
 #endif /* HAVE_LIBSDL */
 
 #endif
