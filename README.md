@@ -25,6 +25,6 @@ This version of the app is setup for a 1920x1080 display.<br>
 All:<br>
 I suggest that you start the PiDP1 and load a tape first as above.<br>
 At the simh prompt, type 'set dpy ena' and then 'att dpy "name of your PiDP1 machine"' and the display should start.<br>
-You may be askimg yourselves, why use SDL3. This library supports transparency so that the DPY display appears as a hexagonal window....<br>
+You may be askimg yourselves, why use SDL3. This library supports transparency so that the DPY display appears as a hexagonal window....<br><br>
 ![Project Screenshot](assets/screenshot.jpg)
 
