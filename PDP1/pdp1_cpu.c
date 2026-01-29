@@ -519,6 +519,7 @@ void uSleep(int waitTime) {
     } while((time2-time1) < waitTime);
 }
 #else
+#include <unistd.h>
 #define uSleep usleep
 #endif
 t_stat sim_instr (void)
