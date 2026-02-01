@@ -16,11 +16,7 @@ My machine is 5120x2160 with a scale of 150%.<br>
 Raspbian:<br>
 You may build and run the app either on the PiDP1 machine or another Pi on the same network.<br>
 However, here is the tricky bit. The SDL3 development files and libraries are not available on Raspbian (as yet).<br>
-To resolve this, I have included the binary of pdp1 in the BIN directory along with the SDL3 shared libraries.<br>
-This binary is built under the latest version of Raspbian .... Trixie.<br>
-First, move the SDL3 libraries to a standard location where the shared library loader will find them.<br>
-In the BIN directory type 'sudo mv libSDL3* /usr/local/lib'. The type 'sudo ldconfig' to update the loader name cache.<br>
-The in the BIN directory, type ./pdp1 and the spp should start.<br>
+The in the BIN directory, type ./pdp1 and the app should start.<br>
 This version of the app is setup for a 1920x1080 display.<br>
 All:<br>
 I suggest that you start the PiDP1 and load a tape first as above.<br>
