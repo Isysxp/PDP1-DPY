@@ -32,7 +32,7 @@ in this Software without prior written authorization from the author.
                      is supported by many operating systems.
 
 */
-#define DISPLAY_SIZE (2048/PIX_SCALE)  /* Max display size in each dimension */
+
 #include "sim_defs.h"
 #include "sim_video.h"
 #include "sim_sock.h"
@@ -42,14 +42,13 @@ in this Software without prior written authorization from the author.
 #include <png.h>
 #endif
 // Global video system flgs/variables
-
 uint32 vid_mono_palette[2];                         /* Monochrome Color Map */
 double *colmap;										/* Parameter used by Refresh and vid_setpixel in sim_video.c */
 int32 pxval,pxdisplay;								/* Also referenced in display.c */
 int nostore=0;							            /* Enables storage display. Always defined. */
 int dflag = 0;                                      /* DisplayUpdate marker flag */
 int esc = 0;                                        /* Escape marker for PiDP1 interface */
-
+int DISPLAY_SIZE;       /* Max display size in each dimension */
 
 char vid_release_key[64] = "Ctrl-Right-Shift";
 
@@ -93,7 +92,7 @@ static SDL_Window *window = 0;                    // Declare some pointers
 static SDL_Surface *surface = 0, *surface32 = 0;
 static SDL_Cursor *cursor = 0;
 static SDL_Surface *bckgnd = NULL, *logo = 0;
-static const SDL_Rect target = { 1440/PIX_SCALE, 1480/PIX_SCALE, 156, 31 }; // x, y, width, height
+static SDL_Rect target;
 static SDL_PropertiesID props;
 static struct pixel_color_set {
     uint8_t R, G, B, A;
@@ -318,13 +317,19 @@ t_stat vid_create_window(void)
     Uint32 colorkey;
     // Create an application window with the following settings:
     SDL_Init (SDL_INIT_VIDEO);
-#if PIX_SCALE == RES_FULL
-    bckgnd = SDL_LoadBMP("pdp1-type30-outline-Final.bmp");
-    logo = SDL_LoadBMP("New_Logo_2.bmp");
-#else
-    bckgnd = SDL_LoadBMP("pdp1-type30-outline-small.bmp");
-    logo = SDL_LoadBMP("New_Logo.bmp");
-#endif
+    DISPLAY_SIZE = (2048 / dpy_scale);
+    target.x = 1440 / dpy_scale;
+	target.y = 1480 / dpy_scale;
+	target.w = 156;
+	target.h = 31;
+    if (dpy_scale == RES_FULL) {
+        bckgnd = SDL_LoadBMP("pdp1-type30-outline-Final.bmp");
+        logo = SDL_LoadBMP("New_Logo_2.bmp");
+    }
+    else {
+        bckgnd = SDL_LoadBMP("pdp1-type30-outline-small.bmp");
+        logo = SDL_LoadBMP("New_Logo.bmp");
+    }
     surface32 = SDL_ConvertSurface(bckgnd,SDL_PIXELFORMAT_ARGB8888);
     SDL_SetSurfaceColorKey(surface32, true, 0);
     props = SDL_CreateProperties();
@@ -362,8 +367,8 @@ t_stat vid_create_window(void)
     pixels = (unsigned char *)surface->pixels;
     sptr = (int32 *)surface->pixels;
     surlen = (bckgnd->h * surface->pitch);
-    drawCircle(bckgnd->w/2-1,bckgnd->h/2-1,728/PIX_SCALE);
-    drawFilledCircle(bckgnd->w/2,bckgnd->h/2,724/PIX_SCALE);
+    drawCircle(bckgnd->w/2-1,bckgnd->h/2-1,728/dpy_scale);
+    drawFilledCircle(bckgnd->w/2,bckgnd->h/2,724/dpy_scale);
     SDL_BlitSurface(logo, NULL, surface, &target);
     SDL_UpdateWindowSurface(window);
     SDL_CreateThread(Refresh,"Refresh",(void *)NULL);
@@ -652,6 +657,10 @@ static int MLoop() {
             break;
     }
     if (dpy_socket != INVALID_SOCKET) {
+        if (!sim_check_conn(dpy_socket, 0)) {
+//            printf("Socket check error\r\n");
+            return 0;
+        }
         while ((len=sim_read_sock(dpy_socket, (char *)&pbuffer, 4)) == 4) {
 			//printf("Data:%0lx %0lx\r\n", pbuffer,pbuffer>>23);
             if (esc)
@@ -666,8 +675,11 @@ static int MLoop() {
             }
 		}
         if (len == -1) {
-            dpy_socket = INVALID_SOCKET;
-            printf("Connection failed\r\n");
+            int sockerr = WSAGetLastError();
+            if (sockerr != 10057) {
+                dpy_socket = INVALID_SOCKET;
+                printf("Connection failed\r\n");
+            }
         }
 
     }

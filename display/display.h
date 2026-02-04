@@ -64,6 +64,8 @@ extern int display_init(enum display_type, int scale, void *dptr);
 /* return size of virtual display */
 extern int display_xpoints(void);
 extern int display_ypoints(void);
+extern int dpy_scale;     /* RES_{FULL,HALF}*/
+extern int dpy_psize;      /* 1,2,3,4 */
 
 /* virtual points between display and menu sections */
 #define VR48_GUTTER 8   /* just a guess */

@@ -53,7 +53,7 @@
 
 
 #ifndef PIX_SIZE
-#define PIX_SIZE 1
+#define PIX_SIZE 4
 #endif
 
 #ifndef PIX_SCALE

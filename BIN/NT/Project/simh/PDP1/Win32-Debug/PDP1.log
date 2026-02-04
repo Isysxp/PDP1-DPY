@@ -1,0 +1,49 @@
+﻿cl : command line  warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  sim_video.c
+C:\Users\iansc\source\repos\PDP1-DPY\sim_video.c(317,12): warning C4101: 'colorkey': unreferenced local variable
+C:\Users\iansc\source\repos\PDP1-DPY\sim_video.c(316,17): warning C4101: 'cntr': unreferenced local variable
+C:\Users\iansc\source\repos\PDP1-DPY\sim_video.c(699,49): warning C4244: '=': conversion from 'float' to 'int32', possible loss of data
+C:\Users\iansc\source\repos\PDP1-DPY\sim_video.c(700,49): warning C4244: '=': conversion from 'float' to 'int32', possible loss of data
+C:\Users\iansc\source\repos\PDP1-DPY\sim_video.c(710,49): warning C4244: '=': conversion from 'float' to 'int32', possible loss of data
+C:\Users\iansc\source\repos\PDP1-DPY\sim_video.c(711,49): warning C4244: '=': conversion from 'float' to 'int32', possible loss of data
+C:\Users\iansc\source\repos\PDP1-DPY\sim_video.c(719,50): warning C4244: '=': conversion from 'float' to 'int32', possible loss of data
+C:\Users\iansc\source\repos\PDP1-DPY\sim_video.c(720,50): warning C4244: '=': conversion from 'float' to 'int32', possible loss of data
+C:\Users\iansc\source\repos\PDP1-DPY\sim_video.c(813,51): warning C4244: 'function': conversion from 'int' to 'float', possible loss of data
+C:\Users\iansc\source\repos\PDP1-DPY\sim_video.c(813,60): warning C4244: 'function': conversion from 'int32' to 'float', possible loss of data
+  sim_tmxr.c
+  sim_timer.c
+  sim_tape.c
+  sim_sock.c
+  sim_serial.c
+  sim_fio.c
+  sim_ether.c
+  sim_disk.c
+  sim_console.c
+  scp.c
+  pdp1_sys.c
+  pdp1_stddev.c
+  pdp1_lp.c
+  pdp1_dt.c
+  pdp1_drm.c
+  pdp1_dpy.c
+C:\Users\iansc\source\repos\PDP1-DPY\PDP1\pdp1_dpy.c(46,8): warning C4142: 'dpy_socket': benign redefinition of type
+      C:\Users\iansc\source\repos\PDP1-DPY\sim_video.h(202,12):
+      see declaration of 'dpy_socket'
+  
+  pdp1_dcs.c
+  pdp1_cpu.c
+  pdp1_clk.c
+  Generating Code...
+  Compiling...
+  sim_ws.c
+  display.c
+  Generating Code...
+pcrestaticd.lib(pcre_chartables.obj) : warning LNK4099: PDB 'pcrestaticd.pdb' was not found with 'pcrestaticd.lib(pcre_chartables.obj)' or at 'C:\Users\iansc\source\repos\PDP1-DPY\BIN\NT\Win32-Debug\pcrestaticd.pdb'; linking object as if no debug info
+pcrestaticd.lib(pcre_compile.obj) : warning LNK4099: PDB 'pcrestaticd.pdb' was not found with 'pcrestaticd.lib(pcre_compile.obj)' or at 'C:\Users\iansc\source\repos\PDP1-DPY\BIN\NT\Win32-Debug\pcrestaticd.pdb'; linking object as if no debug info
+pcrestaticd.lib(pcre_exec.obj) : warning LNK4099: PDB '' was not found with 'pcrestaticd.lib(pcre_exec.obj)' or at ''; linking object as if no debug info
+pcrestaticd.lib(pcre_fullinfo.obj) : warning LNK4099: PDB 'pcrestaticd.pdb' was not found with 'pcrestaticd.lib(pcre_fullinfo.obj)' or at 'C:\Users\iansc\source\repos\PDP1-DPY\BIN\NT\Win32-Debug\pcrestaticd.pdb'; linking object as if no debug info
+pcrestaticd.lib(pcre_globals.obj) : warning LNK4099: PDB 'pcrestaticd.pdb' was not found with 'pcrestaticd.lib(pcre_globals.obj)' or at 'C:\Users\iansc\source\repos\PDP1-DPY\BIN\NT\Win32-Debug\pcrestaticd.pdb'; linking object as if no debug info
+pcrestaticd.lib(pcre_newline.obj) : warning LNK4099: PDB 'pcrestaticd.pdb' was not found with 'pcrestaticd.lib(pcre_newline.obj)' or at 'C:\Users\iansc\source\repos\PDP1-DPY\BIN\NT\Win32-Debug\pcrestaticd.pdb'; linking object as if no debug info
+pcrestaticd.lib(pcre_tables.obj) : warning LNK4099: PDB 'pcrestaticd.pdb' was not found with 'pcrestaticd.lib(pcre_tables.obj)' or at 'C:\Users\iansc\source\repos\PDP1-DPY\BIN\NT\Win32-Debug\pcrestaticd.pdb'; linking object as if no debug info
+pcrestaticd.lib(pcreposix.obj) : warning LNK4099: PDB 'pcrestaticd.pdb' was not found with 'pcrestaticd.lib(pcreposix.obj)' or at 'C:\Users\iansc\source\repos\PDP1-DPY\BIN\NT\Win32-Debug\pcrestaticd.pdb'; linking object as if no debug info
+  PDP1.vcxproj -> C:\Users\iansc\source\repos\PDP1-DPY\BIN\NT\Win32-Debug\PDP1.exe

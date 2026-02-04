@@ -441,7 +441,7 @@ display_age(int t,          /* simulated us since last call */
     static int refresh_elapsed = 0; /* in units of DELAY_UNIT bounded by refresh_interval */
     int changed;
 
-	if (!initialized && !display_init(DISPLAY_TYPE, PIX_SCALE, NULL))
+	if (!initialized && !display_init(DISPLAY_TYPE, dpy_scale, NULL))
         return 0;
 
 	if (slowdown)
@@ -462,7 +462,7 @@ intensify(int x,            /* 0..xpixels */
       int color)            /* for VR20! 0 or 1 */
 {
  
-int pix_size=PIX_SIZE;
+	int pix_size = dpy_psize;
 
     if (x < 0 || x >= xpixels - pix_size || y < pix_size-1 || y >= ypixels - pix_size)
         return 0;           /* limit to display */

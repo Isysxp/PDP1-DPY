@@ -31,7 +31,9 @@
    12-Sep-03    PLB     Add spacewar switch support
    04-Sep-03    PLB     Start from pdp1_lp.c
 */
-
+#ifndef PIX_SIZE
+#define PIX_SIZE 4
+#endif
 #ifdef USE_DISPLAY
 #include "pdp1_defs.h"
 #include "display/display.h"
@@ -41,7 +43,7 @@
 
 extern int32 ios, cpls, iosta, PF;
 extern int32 stop_inst;
-SOCKET dpy_socket = -1;
+SOCKET dpy_socket = INVALID_SOCKET;
 
 t_stat dpy_svc (UNIT *uptr);
 t_stat dpy_reset (DEVICE *dptr);
@@ -62,7 +64,8 @@ UNIT dpy_unit = {
         UDATA (&dpy_svc, UNIT_ATTABLE, 0), DPY_WAIT };
 
 static t_bool dpy_stop_flag = FALSE;
-
+int dpy_scale = PIX_SCALE;     /* RES_{FULL,HALF}*/
+int dpy_psize = PIX_SIZE;      /* 1,2,3,4 */
 static void dpy_quit_callback (void)
 {
 dpy_stop_flag = TRUE;
@@ -86,14 +89,64 @@ MTAB vt_mod[] = {
                 &dpy_connect,    &dpy_show,    NULL, "Master data source" },
     { 0 } };
 */
+
+t_stat dpy_set_scale(UNIT* uptr, int32 val, CONST char* cptr, void* desc)
+{
+    t_stat r;
+    t_value v;
+    if (cptr == NULL)
+        return SCPE_ARG;
+    v = get_uint(cptr, 10, 8, &r);
+    if (r != SCPE_OK)
+        return r;
+    if (v < 1 || v > 2)
+        return SCPE_ARG;
+    if (uptr->flags & UNIT_ATT) {
+        sim_printf("Cannot chnage scaling of attached device\r\n");
+        return SCPE_ARG;
+	}
+    dpy_scale = v;
+    return SCPE_OK;
+}
+t_stat dpy_show_scale(FILE* st, UNIT* uptr, int32 val, CONST void* desc)
+{
+    fprintf(st, "scale=%d", (int)dpy_scale);
+    return SCPE_OK;
+}
+t_stat dpy_set_psize(UNIT* uptr, int32 val, CONST char* cptr, void* desc)
+{
+    t_stat r;
+    t_value v;
+    if (cptr == NULL)
+        return SCPE_ARG;
+    v = get_uint(cptr, 10, 8, &r);
+    if (r != SCPE_OK)
+        return r;
+    if (v > 4 || v < 1)
+        return SCPE_ARG;
+    dpy_psize = v;
+    return SCPE_OK;
+}
+t_stat dpy_show_psize(FILE* st, UNIT* uptr, int32 val, CONST void* desc)
+{
+    fprintf(st, "pixel size=%d", (int)dpy_psize);
+    return SCPE_OK;
+}
+
+MTAB dpy_mod[] = {
+    { MTAB_XTD | MTAB_VDV | MTAB_VALR,   0, "SCALE",     "SCALE={1|2}",
+                &dpy_set_scale,    &dpy_show_scale,    NULL, "Display scale" },
+    { MTAB_XTD | MTAB_VDV | MTAB_VALR,   0, "PSIZE",   "PSIZE={1|2|3|4}",
+                &dpy_set_psize,  &dpy_show_psize,  NULL, "Pixel size" },
+    { 0 } };
+
 DEVICE dpy_dev = {
-        "DPY", &dpy_unit, NULL, NULL,
+        "DPY", &dpy_unit, NULL, dpy_mod,
         1, 10, 31, 1, 8, 8,
         NULL, NULL, &dpy_reset,
         NULL, &dpy_attach,&dpy_detach,
         NULL, DEV_DIS | DEV_DISABLE | DEV_DEBUG,
-        0, dpy_deb};
-
+        0, dpy_deb };
 
 /* Display IOT routine */
 
@@ -153,6 +206,8 @@ t_stat dpy_attach(UNIT* uptr, CONST char* cptr)
     if (dpy_socket == INVALID_SOCKET)
 		return SCPE_UNATT;
 	sim_is_running = 1;                       /* inform socket code that sim is running */  
+    uptr->flags |= UNIT_ATT;
+	uptr->filename = (char*)cptr;
 	return SCPE_OK;
 }
 
@@ -161,6 +216,7 @@ t_stat dpy_detach(UNIT* uptr)
 {
     sim_close_sock(dpy_socket);
     dpy_socket = INVALID_SOCKET;
+    sim_is_running = 1;                       /* inform socket code that sim is not running */
     return SCPE_OK;
 }
 
@@ -188,7 +244,7 @@ t_stat dpy_svc (UNIT *uptr)
 t_stat dpy_reset (DEVICE *dptr)
 {
     if (!(dptr->flags & DEV_DIS)) {
-        display_init(DISPLAY_TYPE, PIX_SCALE, dptr);
+        display_init(DISPLAY_TYPE, dpy_scale, dptr);
         display_reset();
         cpls = cpls & ~CPLS_DPY;
         iosta = iosta & ~(IOS_PNT | IOS_SPC); /* clear flags */
