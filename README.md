@@ -23,4 +23,15 @@ I suggest that you start the PiDP1 and load a tape first as above.<br>
 At the simh prompt, type 'set dpy ena' and then 'att dpy "name of your PiDP1 machine"' and the display should start.<br>
 You may be askimg yourselves, why use SDL3. This library supports transparency so that the DPY display appears as a hexagonal window....<br><br>
 ![Project Screenshot](assets/screenshot.jpg)
+<br>
+<br>
+# Windows installer
+I have now included a Windows installation file in https://github.com/Isysxp/PDP1-DPY/tree/main/DPY_Setup/Release<br>
+Open the .msi file and watch were windows puts the installed files. In this directory, run PDP1.exe.<br>
+This app also provides the following options via the simh prompt:<br>
+sim> set dpy scale=(1 or 2) ... 1 is for a large display (at least 2880 x 1800), 2 for a smaller one. Set this BEFORE typeing set dpy ena.<br>
+sim> set psize=(1 or 2 or 3 or 4) ... this changes the pixel size in the display.<br>
+You can change this parameter while the display is running to find the best setting for you.<br>
+<br>
+Ian Schofield Feb 2026.
 
