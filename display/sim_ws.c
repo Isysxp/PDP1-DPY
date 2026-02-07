@@ -182,6 +182,7 @@ ws_poll(int *valp, int maxus)
             if (!old_lp_sw && !display_tablet)
                 if (vid_set_cursor(1, arrow_cursor->width, arrow_cursor->height, arrow_cursor->data, arrow_cursor->mask, arrow_cursor->hot_x, arrow_cursor->hot_y) == SCPE_OK)
                     old_lp_sw = display_lp_sw;        /* Stop LP event on window focus */
+            vid_mouse_click(ws_lp_x, ws_lp_y);
             }
         else {
             ws_lp_x = ws_lp_y = -1;

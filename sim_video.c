@@ -488,6 +488,29 @@ t_stat vid_screenshot (const char *filename)
     }
 }
 
+void vid_mouse_click(int ix, int iy)
+{
+    int cmd;
+
+    ix -= bckgnd->w / 2 - DISPLAY_SIZE / 4;
+    ix *= dpy_scale;
+    ix -= 512;
+    if (ix < 0)
+        --ix;            // 1's cmpl conversion
+    iy += bckgnd->h / 2 - DISPLAY_SIZE / 4;
+    iy *= dpy_scale;
+    iy -= 512;
+    if (iy < 0)
+        --iy;            // 1's cmpl conversion
+
+    cmd = 0xFF << 24;
+    cmd |= (ix & 0x3FF) << 10;
+    cmd |= (iy & 0x3FF);
+	if (dpy_socket != INVALID_SOCKET)   
+        sim_write_sock(dpy_socket, (const char *) &cmd, 4);
+//	printf("Mouse click at %d, %d\n", ix, iy);  
+}
+
 void vid_set_cursor_position (int32 x, int32 y) {
 
     lcurr_x = x;
