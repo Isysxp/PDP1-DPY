@@ -38,5 +38,12 @@ sim> set dpy scale=(1 or 2) ... 1 is for a large display (at least 2880 x 1800),
 sim> set psize=(1 or 2 or 3 or 4) ... this changes the pixel size in the display.<br>
 You can change this parameter while the display is running to find the best setting for you.<br>
 <br>
+#Lightpen support
+This app also supports lightpen functionality which has now been added to a forked version of the PiDP1 software.<br>
+This repo can be found at: https://github.com/wjenh/pidp1-mods and I would like to thanks Bill Ezell for all his hard work in putting this all together.<br>
+Installing this is just as easy as with the original software. Do check out the lightpen test app (lightpen.rim) which is in the Visual Studio directory.<br>
+This works with both this repo and a modified version of p7simES included in the pidp1-mods fork.<br>
+
+
 Ian Schofield Feb 2026.
 
