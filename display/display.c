@@ -124,7 +124,7 @@ static struct phosphor p17[] = {{0.8,0.95,0.8,0xb0b0ff}};
 static struct phosphor p29[] = {{0.0,0.8,0.0,0xff00}};
 
     /* P40 blue-white spot with yellow-green decay (.045s to 10%?) */
-static struct phosphor p40[] = {{0.85,0.999,0.999,0x8080ff}};
+static struct phosphor p40[] = {{0.85,0.9999,0.9999,0x8080ff}};
 
 	/* "red+green" -- until real VR20 phosphor type/number/constants known */
 	/* Only used with the VC8(e) display hardware. CO bit changes (masks) pxval in vid_setpixel */
