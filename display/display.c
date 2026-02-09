@@ -73,7 +73,7 @@
 
 /* select a default light-pen hit radius if display_init() not called */
 #ifndef PEN_RADIUS
-#define PEN_RADIUS 4
+#define PEN_RADIUS 3
 #endif /* PEN_RADIUS not defined */
 
 
