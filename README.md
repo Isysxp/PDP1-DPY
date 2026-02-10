@@ -44,7 +44,7 @@ This repo can be found at: https://github.com/wjenh/pidp1-mods and I would like 
 Installing this is just as easy as with the original software. Do check out the lightpen test app (lightpen.rim) which is in the Visual Studio directory.<br>
 This works with both this repo and a modified version of p7simES included in the pidp1-mods fork.<br>
 # Simh update
-I view of the chnages applied to this app for use with the PiDP1, I have updated the Simh code as well. This version displays a decorated Type 30 display
+In view of the changes applied to this app for use with the PiDP1, I have updated the Simh code as well. This version displays a decorated Type 30 display
 with 2 scale options as above. It now passes the Light Pen Maindec and this is included in the Visual Sudio directory.<br>
 To run this test:
 load lptest.bin<br>
