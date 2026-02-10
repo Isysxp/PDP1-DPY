@@ -1183,7 +1183,7 @@ while (reason == 0) {                                   /* loop until halted */
             reason = set_rmv (RTB_IOT);                 /* violation */
             break;
             }
-        if (IR & IO_WAIT) {                             /* wait? */
+        if (IR & IO_WAIT & 0) {                             /* wait? */
             if (ioh) {                                  /* I/O halt? */
                 if (ios)                                /* comp pulse? done */
                     ioh = 0;

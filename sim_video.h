@@ -197,6 +197,7 @@ t_stat vid_set_release_key (FILE* st, UNIT* uptr, int32 val, CONST void* desc);
 t_stat vid_show_release_key (FILE* st, UNIT* uptr, int32 val, CONST void* desc);
 t_stat vid_lock_cursor(void);
 t_stat vid_unlock_cursor(void);
+void vid_mouse_click(int ws_lp_x, int ws_lp_y, int state);
 
 extern uint32 vid_mono_palette[2];
 extern int dpy_socket;

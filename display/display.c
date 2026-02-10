@@ -73,7 +73,7 @@
 
 /* select a default light-pen hit radius if display_init() not called */
 #ifndef PEN_RADIUS
-#define PEN_RADIUS 4
+#define PEN_RADIUS 10
 #endif /* PEN_RADIUS not defined */
 
 
@@ -124,7 +124,7 @@ static struct phosphor p17[] = {{0.8,0.95,0.8,0xb0b0ff}};
 static struct phosphor p29[] = {{0.0,0.8,0.0,0xff00}};
 
     /* P40 blue-white spot with yellow-green decay (.045s to 10%?) */
-static struct phosphor p40[] = {{0.85,0.999,0.999,0x8080ff}};
+static struct phosphor p40[] = {{0.85,0.9999,0.9999,0x8080ff}};
 
 	/* "red+green" -- until real VR20 phosphor type/number/constants known */
 	/* Only used with the VC8(e) display hardware. CO bit changes (masks) pxval in vid_setpixel */
@@ -258,6 +258,9 @@ static int refresh_interval;
 static int ncolors;
 static enum display_type display_type;
 static int scale;
+extern int init_h;
+extern unsigned int init_w;
+extern int DISPLAY_SIZE;
 #ifdef  __cplusplus
 extern "C" {
 #endif
@@ -487,12 +490,15 @@ display_point(int x,        /* 0..xpixels (unscaled) */
           int color)        /* for VR20! 0 or 1 */
 {
     long lx, ly;
+	int xref, yref;
+
 
 	/* This should never happen!! */
 	
     if (!initialized)
         return 0;
-
+    xref = init_w / 2 - DISPLAY_SIZE / 4;
+    yref = init_h / 2 - DISPLAY_SIZE / 4;
     /* scale x and y to the displayed number of pixels */
     /* handle common cases quickly */
     if (scale > 1) {
@@ -513,8 +519,9 @@ display_point(int x,        /* 0..xpixels (unscaled) */
  
     if (ws_lp_x == -1 || ws_lp_y == -1)
         return 0;
-    lx = x - ws_lp_x;
-    ly = y - ws_lp_y;
+    lx = x - ws_lp_x + xref;
+    ly = y - ws_lp_y - yref;
+	//printf("display_point:lx=%ld ly=%ld\r\n", lx, ly);
     return lx*lx + ly*ly <= scaled_pen_radius_squared;
 } /* display_point */
 
