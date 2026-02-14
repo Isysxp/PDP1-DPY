@@ -495,7 +495,7 @@ void vid_mouse_click(int ix, int iy, int state)
 {
 	int cmd = 0;
 	if (state) {
-		//	printf("IX/Y:%d %d\r\n", ix, iy);
+//		printf("IX/Y:%d %d\r\n", ix, iy);
 		ix -= bckgnd->w / 2 - DISPLAY_SIZE / 4;
 		ix *= dpy_scale;
 		ix -= 512;
@@ -514,9 +514,11 @@ void vid_mouse_click(int ix, int iy, int state)
 	}
 	else
 		cmd = 0xFF100000;
+	if ((abs(ix) > 512 || abs(iy) > 512) && state)
+		cmd = 0xFF100000;	
 	if (dpy_socket != INVALID_SOCKET)
 		sim_write_sock(dpy_socket, (const char*)&cmd, 4);
-	//	printf("Mouse click at %d, %d, %d, %d\n", ix, iy, DISPLAY_SIZE, dpy_scale);  
+//		printf("Mouse click at %d, %d, %d, %d\n", ix, iy, DISPLAY_SIZE, dpy_scale);  
 }
 
 void vid_set_cursor_position(int32 x, int32 y) {
